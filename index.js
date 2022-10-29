@@ -1,11 +1,27 @@
+
 const express = require('express')
-const app = express()
-const port = 3000
+const morgan = require('morgan')
+const path = require('path')
+const mysql = require('mysql')
+const { hostname } = require('os')
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+var con = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: ""
+});
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+con.connect(function(err) {
+  if (err) {
+    console.log("ERROR!")
+    throw err;
+  }
+  console.log("Connected!");
+  con.query('CREATE DATABASE DB_NODEJS', (err)=>{
+    if(err) {
+      console.log("ERROR CREATE DATABASE");
+      throw err;
+    } 
+    console.log("CREATE SUCCESS!");
+  })
+});
